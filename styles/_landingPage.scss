@@ -1,0 +1,110 @@
+.landingpage_wrapper {
+  @include fullscreen_wrapper;
+  background-color: $black;
+  color: $white;
+
+  // flex
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: $g1 /2;
+}
+
+// LOGO 
+.large_logo_wrapper {
+  padding: $g1 /2;
+}
+
+// COUNTRY/LANG PICKER
+.picker_outerwrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.picker_container {
+  height: 46px;
+  display: flex;
+  align-items: center;
+}
+
+.picker_text {
+  font-size: 3.2rem;
+}
+
+.picker {
+  font-size: 3.2rem;
+  font-weight: 700;
+}
+
+
+
+// SOUND NOTICE FOOTER
+.sound_notice_text {
+  text-align: center;
+  opacity: .4;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 0.075em;
+}
+
+
+// ***** MEDIA QUERIES ******** //
+
+//  Large
+@media (max-width: 1800px) {
+  .picker_text, .picker {
+    font-size: 2.4rem;
+  }
+  .large_logo_wrapper {
+    width: 85%;
+  } 
+  .picker_container {
+    height: 36px;
+  }
+  .sound_notice_text {
+    font-size: 1.4rem;
+  }
+  .landingpage_wrapper {
+    padding-top: 5%;
+  }
+}
+
+//  Medium
+@media (max-width: 1280px) {
+  .picker_text, .picker {
+    font-size: 2.4rem;
+  }
+  .sound_notice_text {
+    font-size: 1.4rem;
+  }
+  .landingpage_wrapper {
+    padding-top: $outer_padding;
+  }
+  .sound_notice_container {
+    padding-bottom: 2px;
+  }
+  .landingpage_wrapper {
+    padding-top: 5%;
+  }
+}
+
+//  Small
+@media (max-width: 768px) {
+  .large_logo_wrapper {
+    width: 60%;
+  } 
+  .picker_text, .picker {
+    font-size: 1.6rem;
+  }
+  .sound_notice_text {
+    font-size: 1.2rem;
+  }
+  .large_logo_wrapper {
+    padding: 0;
+  }
+  .landingpage_wrapper {
+    padding-top: 15%;
+  }
+}

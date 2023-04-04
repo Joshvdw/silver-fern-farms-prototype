@@ -1,0 +1,116 @@
+// CTA BTNS
+.cta_btn {
+  background-color: $white;
+  color: $black;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  line-height: 16px;
+}
+
+.cta_btn:hover {
+    background-color: $gray;
+  }
+
+// LOGOS
+.logo {
+  width: 100%;
+}
+
+// ARROW BTN
+.arrow_btn_container {
+  position: absolute;
+  color: $white;
+  display: flex;
+  align-items: center;
+  gap: $btn_text_gap;
+  cursor: pointer;
+  .back_btn_container {    
+    left: $outer_padding;
+  }
+}
+
+.back_btn {
+  display: flex;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.videoskip_container {
+  right: $outer_padding;
+}
+
+.arrow_btn_text {
+  font-weight: 700;
+  letter-spacing: .33em;
+  line-height: 1em;
+  padding-top: 5px;
+  font-size: 1.6rem;
+}
+
+// MUTE LOTTIE
+.mute_lottie {
+  z-index: 5;
+  width: 30px;
+  position: fixed;
+  left: $outer_padding;
+  display: flex;
+  align-items: flex-start;
+}
+
+.center_lottie {
+  left: calc(50vw - 15px)!important;
+}
+
+// ***** MEDIA QUERIES ******** //
+
+//  Large
+@media (max-width: 1800px) {
+  .cta_btn {
+    font-size: 1.2rem;
+  }
+  .arrow_btn_text {
+    font-size: 1.1rem;
+  }
+  .back_btn {
+    display: flex;
+    justify-content: center;
+  }
+  .back_btn img {
+    width: 26px;
+    height: 26px;
+  }
+  .arrow_btn_container {
+    gap: 5px;
+  }
+}
+
+//  Medium
+@media (max-width: 1280px) {
+  .arrow_btn_text {
+    padding-top: 2px;
+  }
+  .back_btn img {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+//  Small
+@media (max-width: 768px) {
+  .arrow_btn_text {
+    font-size: 0.9rem;
+  }
+  .back_btn img {
+    width: 24px;
+    height: 24px;
+  }
+  .back_btn_container {
+    top: $outer_padding!important;
+  }
+  .mute_lottie {
+    left: 7vw;
+  }
+}

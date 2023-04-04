@@ -1,0 +1,37 @@
+.videosequence_wrapper {
+  background-color: $black;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.video_sequence {
+  outline: none;
+  height: 100%;
+  width: 100%;
+
+  // make 16:9 video always full screen (will be zoomed)
+  width: 177.77777778vh; /* 100 * 16 / 9 */
+  min-width: 100%;
+  min-height: 56.25vw;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  overflow: hidden;
+}
+
+// hide specific elements from video-controls
+// for more options, see: https://opensource.apple.com/source/WebCore/WebCore-1889.59/css/mediaControls.css.auto.html
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-mute-button,
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display,
+video::-webkit-media-controls-fullscreen-button {
+  display: none;
+}

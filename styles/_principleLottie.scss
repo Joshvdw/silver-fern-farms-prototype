@@ -1,0 +1,30 @@
+.principle_lottie_wrapper {
+  height: 1500vh;
+}
+
+.lottie_container {
+  position: sticky;
+  top: 0;  
+  background: linear-gradient(180deg, rgba(255,255,255,1) 53%, rgb(0, 0, 0) 53%);
+}
+
+.principle_lottie {
+  height: 100vh!important;
+}
+
+// ***** MEDIA QUERIES ******** //
+
+//  Large
+@media (max-width: 1800px) {
+
+}
+
+//  Medium
+@media (max-width: 1280px) {
+
+}
+
+//  Small
+@media (max-width: 768px) {
+
+}

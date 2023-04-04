@@ -1,0 +1,17 @@
+.canvas_360_container {
+  position: absolute!important;
+  left: 0!important;
+  top: 0!important;
+  width: 100%!important;
+  height: 100vh!important;
+  :focus {
+    outline: none!important;
+  }
+}
+.canvas_360 {
+  width: 100%!important;
+  height: 100%!important;
+  :focus {
+    outline: none!important;
+  }
+}

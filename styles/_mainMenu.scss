@@ -1,0 +1,131 @@
+.mainmenu_wrapper {
+  @include fullscreen_wrapper;
+  position: fixed;
+  top: 0;
+  background-color: $primary;
+  z-index: 1000;
+  padding: $outer_padding * 2;
+  text-transform: uppercase;
+}
+
+.mainmenu_flex {
+  width: 100%;
+  padding: 0 $g1;
+  position: absolute;
+  top: calc(50vh - (3.2rem / 2));
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc((50vh - (3.2rem + 2.5rem)) / 2);
+}
+
+.mainmenu_logo_container img {
+  width: 152px;
+  margin: 0 auto;
+  display: block;
+}
+
+.mainmenu_topnav {
+  display: flex;
+  justify-content: space-between;
+  gap: $g1;
+  width: 100%;
+}
+
+.mainmenu_x_container img {
+  float: right;
+}
+
+.mainmenu_container {
+  width: 100%;
+  display: flex;
+  gap: $g1 / 2;
+  justify-content: space-between;
+}
+
+.menu_item_text {
+  font-weight: 700;
+  font-size: 3.6rem;
+  letter-spacing: 0.2em;
+}
+
+.inactive {
+  opacity: 0.2;
+}
+
+.langpick_container {
+  display: flex;
+  gap: $btn_text_gap * 2;
+  justify-content: center;
+}
+
+.langpick_text {
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.dropdown_icon {
+  display: none;
+}
+
+// ***** MEDIA QUERIES ******** //
+
+//  Large
+@media (max-width: 1800px) {
+  .menu_item_text {
+    font-size: 2.6rem;
+  }
+  .mainmenu_logo_container img {
+      width: 113px;
+  }
+  .langpick_text {
+    font-size: 1.4rem;
+  }
+}
+
+//  Medium
+@media (max-width: 1280px) {
+  .mainmenu_container { 
+    flex-direction: column;
+    align-items: center;
+    gap: $g1 * 1.5;
+    text-align: center;
+  }
+  .mainmenu_flex {
+    top: calc(50vh - 200px);
+  } 
+}
+
+//  Small
+@media (max-width: 768px) {
+  .mainmenu_logo_container img {
+      width: 89px;
+  }
+  .mainmenu_container { 
+    gap: $g1 * 2;
+  }
+  .mainmenu_topnav {
+    gap: 0;
+  } 
+  .menu_item_text {
+    font-size: 1.6rem;
+  }
+  .dropdown_icon {
+    display: inline-block;
+    padding-left: 5px;
+  }
+  .langpick_text {
+    display: none;
+  }
+  .langpick_text.active {
+    display: block!important;
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+  .mainmenu_flex {
+    top: calc(50vh - 100px);
+  } 
+}
+
+// gap: 243.5
