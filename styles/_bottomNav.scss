@@ -102,7 +102,27 @@
 
 //  Small
 @media (max-width: 768px) {
+  .spotlightnav_btn_container {
+    gap: 5px;
+  }
   .bottomnav_wrapper {
-    display: none;
+    gap: 5vw;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .line_container {
+    min-width: 5rem;
+  }
+  .spotlightnav_title_container {
+    max-width: 15rem;
+  } 
+  .spotlightnav_container {
+    min-width: 16rem;
+  }
+  .subheader_bottomnav {
+    font-size: 1.6rem!important;
+  }
+  .num_text_container {
+    font-size: 0.9rem;
   }
 }

@@ -1,0 +1,56 @@
+.loader_wrapper {
+  background: $black;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 6000;
+  color: $white;
+}
+
+.load_bar {
+  height: 16px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.progress_bar {
+  background-color: $white;
+  height: 100%;
+}
+
+.load_icon {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 128px;
+  }
+}
+
+// ***** MEDIA QUERIES ******** //
+
+//  Large
+@media (max-width: 1800px) {
+  .load_icon img {
+    width: 72px;
+  }
+  .loadbar {
+    height: 10px;
+  }
+}
+
+//  Medium
+@media (max-width: 1280px) {
+
+}
+
+//  Small
+@media (max-width: 768px) {
+  .load_icon img {
+    width: 56px;
+  }
+  .loadbar {
+    height: 8px;
+  }
+}

@@ -4,7 +4,7 @@ import mute_lottie from "@/public/lotties/mute_lottie.json";
 import mute_lottie_off from "@/public/lotties/mute_lottie_off.json";
 import mute_lottie_black from "@/public/lotties/mute_lottie_black.json";
 import useStore from '@/hooks/useStore';
-import { muteSounds, unMuteSound } from '@/utils/audio';
+import { muteSounds, unMuteSound } from '@/hooks/utils/audio';
 
 export default function MuteLottie() {
 

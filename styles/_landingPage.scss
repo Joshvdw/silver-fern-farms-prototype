@@ -57,9 +57,9 @@
   .picker_text, .picker {
     font-size: 2.4rem;
   }
-  .large_logo_wrapper {
-    width: 85%;
-  } 
+  // .large_logo_wrapper {
+  //   width: 85%;
+  // } 
   .picker_container {
     height: 36px;
   }
@@ -83,7 +83,7 @@
     padding-top: $outer_padding;
   }
   .sound_notice_container {
-    padding-bottom: 2px;
+    // padding-top: 15px;
   }
   .landingpage_wrapper {
     padding-top: 5%;
@@ -92,9 +92,6 @@
 
 //  Small
 @media (max-width: 768px) {
-  .large_logo_wrapper {
-    width: 60%;
-  } 
   .picker_text, .picker {
     font-size: 1.6rem;
   }
@@ -106,5 +103,12 @@
   }
   .landingpage_wrapper {
     padding-top: 15%;
+  }
+}
+
+// mobile only
+@media (max-width: 480px) {
+  .landingpage_wrapper {
+    height: $mobile_height;
   }
 }

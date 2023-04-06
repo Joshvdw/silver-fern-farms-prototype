@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import '@/styles/globals.scss'
 import PrinciplePage from "@/components/PrinciplePage";
@@ -11,12 +11,26 @@ import MainMenu from "@/components/MainMenu";
 import SpotlightFooter from "@/components/SpotlightFooter";
 import WelcomeScreen from "@/components/WelcomeScreen";
 import Sound from "@/components/Sound";
-import { playSound } from "@/utils/audio";
+import { playSound } from "@/hooks/utils/audio";
+import Loader from "@/components/Loader";
 
 export default function App() {
 
   // react-unity-webgl config
-  const { unityProvider, sendMessage, addEventListener, removeEventListener  } = useUnityContext({
+  // const { unityProvider, sendMessage, addEventListener, removeEventListener, isLoaded  } = useUnityContext({
+  //   loaderUrl: "/unity/BuildGzip.loader.js",
+  //   dataUrl: "/unity/BuildGzip.data.gz",
+  //   frameworkUrl: "/unity/BuildGzip.framework.js",
+  //   codeUrl: "/unity/BuildGzip.wasm.gz",
+  // });
+  // const { unityProvider, sendMessage, addEventListener, removeEventListener, isLoaded  } = useUnityContext({
+  //   loaderUrl: "/Build/Build_Gzip/BuildGzip.loader.js",
+  //   dataUrl: "/Build/Build_Gzip/BuildGzip.data.gz",
+  //   frameworkUrl: "/Build/Build_Gzip/BuildGzip.framework.js",
+  //   codeUrl: "/Build/Build_Gzip/BuildGzip.wasm.gz",
+  // });
+
+  const { unityProvider, sendMessage, addEventListener, removeEventListener, loadingProgression, isLoaded  } = useUnityContext({
     loaderUrl: "/Build/Build.loader.js",
     dataUrl: "/Build/Build.data",
     frameworkUrl: "/Build/Build.framework.js",
@@ -24,6 +38,9 @@ export default function App() {
   });
 
   // global state management for interactions
+  const landingPage = useStore((state: any) => state.landingPage);
+  const setLandingPage = useStore((state: any) => state.setLandingPage);
+  const videoSequence = useStore((state: any) => state.videoSequence);
   const welcomeScreen = useStore((state: any) => state.welcomeScreen);
   const spotLight = useStore((state: any) => state.spotLight);
   const hamburgerMenu = useStore((state: any) => state.hamburgerMenu);
@@ -33,10 +50,34 @@ export default function App() {
   const openPrinciple = useStore((state: any) => state.openPrinciple)
   const setSpotLight = useStore((state: any) => state.setSpotLight)
 
+  // returning visitor state
+  const [visited, setVisited] = useState('false')
+
+  useEffect(() => {
+    const siteState = window.sessionStorage.getItem("siteState");   
+    console.log(siteState);
+    
+    if (visited == "true") {
+      sendMessage("Spotlight_Manager","unity_open")
+      setLandingPage(false);
+    }
+    if (siteState == 'true') {
+      setVisited('true') 
+    } else if (siteState == 'false') {
+      setVisited('false')
+    }
+  }, [visited, isLoaded])
+
   // send messages to Unity Build
   useEffect(() => {
+    if (!videoSequence) {
+      sendMessage("Spotlight_Manager","unity_open")
+    }
+  }, [videoSequence])
+
+  useEffect(() => {
     if (!welcomeScreen) {
-      sendMessage("Spotlight_Manager", "map_intro")   
+      sendMessage("Spotlight_Manager", "map_intro")
     }
   }, [welcomeScreen])
 
@@ -71,7 +112,7 @@ export default function App() {
   return ( 
     <>
       <div className="main">
-        {/* <LandingPage /> */}
+        <LandingPage />
         <Sound />
 
       {welcomeScreen && (
@@ -102,7 +143,14 @@ export default function App() {
         )}
       </div>
       <MuteLottie />
-      <Unity unityProvider={unityProvider} className="unity_canvas"/>
+      {!isLoaded && (
+        <Loader loadingProgress={Math.round(loadingProgression * 100)}/>
+      )} 
+        <Unity 
+          unityProvider={unityProvider} 
+          className="unity_canvas"
+          style={{ visibility: isLoaded ? "visible" : "hidden" }}
+        />
     </>
   )
 }

@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSpring, animated, config } from 'react-spring';
-import { useIntersectionObserver } from '@/utils/utils';
+import { useIntersectionObserver } from '@/hooks/utils/utils';
 import PrincipleLottie from './PrincipleLottie'
 import Panoramic from './Panoramic';
-import { playSound, toggleBackgroundSound } from '@/utils/audio';
+import { playSound, toggleBackgroundSound } from '@/hooks/utils/audio';
+import useStore from '@/hooks/useStore';
 
 export default function PrinciplePage(prop: {page: string}) {
   
@@ -13,6 +14,9 @@ export default function PrinciplePage(prop: {page: string}) {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [panoramicState, setPanoramicState] = useState(false);
+
+  const panoramicLoad = useStore((state: any) => state.panoramicLoad)
 
   useEffect(() => {
     function handleScroll() {
@@ -59,6 +63,7 @@ export default function PrinciplePage(prop: {page: string}) {
 
 
   const fade_delay = 500
+  // const fade_delay = 0
 
   const fade_h1 = useSpring({
     config: { ...config.molasses },
@@ -110,85 +115,90 @@ export default function PrinciplePage(prop: {page: string}) {
     }
   });
 
-
+  useEffect(() => {
+    console.log(panoramicLoad);
+    
+    setPanoramicState(panoramicLoad)
+  }, [panoramicLoad])
+  
   // hero transition 
-  const slide_delay = 500
+  const slide_delay = 1250
+  const hero_delay = 3500
 
   const pageSlide = useSpring({ 
-    // delay: 1500,
     config: { ...config.slow },
     from: { marginTop: "100vh" },
     to: { marginTop: "0vh" }
   });
 
   const num1 = useSpring({ 
-    delay: slide_delay,
+    delay: slide_delay + 1500,
     config: { ...config.slow },
     val: 44.8575,
-    from: { val: 0 } 
+    from: { val: panoramicState ? 23.2451 : 44.8575} 
   });
 
   const num2 = useSpring({ 
-    delay: slide_delay + 200,
+    delay: slide_delay + 1700,
     config: { ...config.slow },
     val: 169.3859, 
-    from: { val: 0 } 
+    from: { val: panoramicState ? 129.2546 : 169.3859} 
   });  
 
   const fade1 = useSpring({
     delay: slide_delay + 100,
     config: { ...config.molasses },
     from: { opacity: 0 },
-    to: { opacity: 1 }
+    to: { opacity: panoramicState ? 1 : 0 }
   });
 
   const fade2 = useSpring({
     delay: slide_delay + 750,
     config: { ...config.molasses },
     from: { opacity: 0 },
-    to: { opacity: 1 }
+    to: { opacity: panoramicState ? 1 : 0 }
   });
 
   const fade3 = useSpring({
     delay: slide_delay + 1500,
     config: { ...config.molasses },
     from: { opacity: 0 },
-    to: { opacity: 1 }
+    to: { opacity: panoramicState ? 1 : 0 }
   });
 
   const blackOverlay = useSpring({
-    delay: slide_delay + 3200,
+    delay: slide_delay + hero_delay + 200,
     config: { ...config.molasses },
     from: { background: 'rgba(0, 0, 0, 0.25)' },
-    to: { background: 'rgba(0, 0, 0, 0)' }
+    to: { background: panoramicState ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.25)' }
   });  
 
   const fadeOut = useSpring({
-    delay: slide_delay + 3000,
-    config: { ...config.slow },
+    delay: slide_delay + hero_delay,
+    config: { ...config.gentle },
     from: { opacity: 1 },
-    to: { opacity: 0 }
+    to: { opacity: panoramicState ? 0 : 1 }
   });  
 
   const scrollDown = useSpring({
-    delay: slide_delay + 3000,
+    delay: slide_delay + hero_delay,
     config: { ...config.molasses },
     from: { top: '85vh' },
-    to: { top: '90vh' }
+    to: { top: panoramicState ? '90vh' : '85vh' }
   });  
 
   const heroMove = useSpring({
-    delay: slide_delay + 3200,
+    delay: slide_delay + hero_delay + 200,
     config: { ...config.molasses },
-    from: { top: '4.5%' },
-    to: { top: '0' }
+    from: { top: '40vh' },
+    to: { top: panoramicState ? '0' : '40vh' }
   });  
 
   const shrinkHero = useSpring({
-    delay: slide_delay + 3200,
+    delay: slide_delay + hero_delay + 200,
     config: { ...config.slow },
     from: { scale: 1 },
-    to: { scale: .33 }
+    to: { scale: panoramicState ? .33 : 1 }
   });    
 
   const fadeOutScroll = useSpring({
@@ -218,26 +228,27 @@ export default function PrinciplePage(prop: {page: string}) {
       window.removeEventListener('resize', handleResize);
     };
   }, [isMobile]);
-
-
+  console.log(panoramicState)
   return (
     <animated.div style={pageSlide} className='principle_wrapper' ref={wrapperRef} onScroll={() => setScrolled(true)}>
-        <div className="principle_hero_container">
-          <animated.div className="hero_text_container" style={{...heroMove, ...shrinkHero}}>
-            <animated.h5 style={{...fade1, ...fadeOut}}>
-              <animated.span>{num1.val.to(val => val.toFixed(4))}</animated.span>°  S  |  
-              <animated.span>{num2.val.to(val => val.toFixed(4))}</animated.span>°  E
-            </animated.h5>
-            <animated.h2 style={fade2}>P{prop.page} LINDIS CROSSING</animated.h2>
-            <animated.h5 style={fade3}>CENTRAL OTAGO | NEW ZEALAND</animated.h5>
-          </animated.div>
-          <animated.a href="#scrolldown_link" className="scrolldown_indicator_container" style={{...scrollDown, ...fadeOutScroll}} onClick={() => playSound('ui_click')}>
-            <animated.p className="footer_header scrolldown_header" style={fade3}>SCROLL</animated.p>
-            <animated.img src="/images/scrolldown_line.png" alt="Scrolldown Indicator Button"  style={fade3} />
-          </animated.a>
-          <Panoramic />
-        </div>
-        <animated.div style={blackOverlay} className="black_hero_overlay"></animated.div>
+      <animated.div className="principle_hero_container" >
+        <animated.div className="hero_text_container" style={{...heroMove, ...shrinkHero}}>
+          <animated.h5 style={panoramicState ? fade1 : {opacity: "0"}}>
+            <animated.span style={panoramicState ? fadeOut : {opacity: "1"}}>{panoramicState ? num1.val.to(val => val.toFixed(4)) : ''}</animated.span>
+            <animated.span style={panoramicState ? fadeOut : {opacity: "1"}}>°  S  | </animated.span>  
+            <animated.span style={panoramicState ? fadeOut : {opacity: "1"}}>{panoramicState ? num2.val.to(val => val.toFixed(4)): ''}</animated.span>
+            <animated.span style={panoramicState ? fadeOut : {opacity: "1"}}>°  E</animated.span>
+          </animated.h5>
+          <animated.h2 style={panoramicState ? fade2 : {opacity: "0"}}>P{prop.page} LINDIS CROSSING</animated.h2>
+          <animated.h5 style={panoramicState ? fade3 : {opacity: "0"}}>CENTRAL OTAGO | NEW ZEALAND</animated.h5>
+        </animated.div>
+        <animated.a href="#scrolldown_link" className="scrolldown_indicator_container" style={{...scrollDown, ...fadeOutScroll}} onClick={() => playSound('ui_click')}>
+          <animated.p className="footer_header scrolldown_header" style={panoramicState ? fade3 : {opacity: "0"}}>SCROLL</animated.p>
+          <animated.img src="/svg/scrolldown_line.svg" alt="Scrolldown Indicator Button"  style={fade3} />
+        </animated.a>
+      </animated.div>
+      <Panoramic />
+      <animated.div style={blackOverlay} className="black_hero_overlay"></animated.div>
       <div className="principle_content_container" id='scrolldown_link'>
         <animated.h6 ref={triggerRef_h6} style={fade_h6}>PRINCIPLE No. {prop.page}</animated.h6>
         <animated.h1 ref={triggerRef_h1} style={fade_h1} className="principle_header">REDUCING OUR CARBON FOOTPRINT</animated.h1>

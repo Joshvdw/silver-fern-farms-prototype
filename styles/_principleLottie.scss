@@ -5,11 +5,11 @@
 .lottie_container {
   position: sticky;
   top: 0;  
-  background: linear-gradient(180deg, rgba(255,255,255,1) 53%, rgb(0, 0, 0) 53%);
 }
 
 .principle_lottie {
   height: 100vh!important;
+  width: 100%;
 }
 
 // ***** MEDIA QUERIES ******** //
@@ -24,7 +24,9 @@
 
 }
 
-//  Small
-@media (max-width: 768px) {
-
+//  mobile only
+@media (max-width: 480px) {
+  .principle_lottie {
+    height: $mobile_height!important;
+  }
 }

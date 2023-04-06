@@ -12,7 +12,8 @@
 "./mainMenu", 
 "./spotlightFooter", 
 "./principleLottie",
-"./panoramic";
+"./panoramic",
+"./loader";
 
 // CSS RESET
 * {
@@ -28,6 +29,9 @@ a {
 
 
 // GLOBAL ELEMENTS
+:root {
+ --doc-height: 100%;
+}
 html {
   font-family: Graphik, sans-serif;;
   font-size: 10px;
@@ -177,4 +181,13 @@ h6 {
     font-size: 1rem;
     line-height: 110%;
   } 
+}
+
+// mobile only
+@media (max-width: 480px) {
+  html, body, .unity_canvas {
+    // height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); 
+    // min-height: -webkit-fill-available;
+    height: $mobile_height;
+  }
 }

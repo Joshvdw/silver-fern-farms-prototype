@@ -1,4 +1,4 @@
-import { playSound } from '@/utils/audio'
+import { playSound } from '@/hooks/utils/audio'
 import React from 'react'
 
 

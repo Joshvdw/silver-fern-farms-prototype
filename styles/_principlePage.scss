@@ -63,6 +63,8 @@
 
 .principle_header {
   padding: 0 $g1;
+  max-width: 15em;
+  margin: 0 auto;
 }
 
 .principle_subheader {
@@ -131,6 +133,10 @@
     font-size: 2rem;
     padding: 0 $g1;
   }
+  .principle_header {
+    padding: 0;
+    max-width: 12em;
+  }
 }
 
 //  Small
@@ -147,5 +153,12 @@
   }
   .scrolldown_indicator_container {
     display: none;
+  }
+}
+
+// mobile only
+@media (max-width: 480px) {
+  .principle_hero_container, .black_hero_overlay, .video_360 {
+    height: $mobile_height;
   }
 }

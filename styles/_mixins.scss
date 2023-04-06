@@ -5,10 +5,3 @@
   overflow: hidden;
   padding: $outer_padding; 
 }
-
-//  Small
-@media (max-width: 768px) {
-  @mixin fullscreen_wrapper {
-    min-height: -webkit-fill-available;  
-  }
-}

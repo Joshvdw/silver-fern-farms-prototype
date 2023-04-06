@@ -4,7 +4,7 @@ export default function Logo(prop: {class: string, logo: string}) {
   
   return (
     <div className={`logo_wrapper ${prop.class}_logo_wrapper`}>
-      <img src={`/images/sff_logo_${prop.logo}.png`} alt="silver fern farms logo" className='logo' />
+      <img src={`/svg/sff_logo_${prop.logo}.svg`} alt="silver fern farms logo" className={`${prop.class}_logo_${prop.logo}`} />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import useStore from '@/hooks/useStore'
-import { playSound } from '@/utils/audio'
+import { playSound } from '@/hooks/utils/audio'
 import React from 'react'
 import Logo from './UI/Logo'
 
@@ -12,6 +12,7 @@ export default function MainMenu() {
   const setPrinciple = useStore((state: any) => state.setPrinciple)
   const setOpenPrinciple = useStore((state: any) => state.setOpenPrinciple)
   const setBottomNav = useStore((state: any) => state.setBottomNav)
+  const setPanoramicLoad = useStore((state: any) => state.setPanoramicLoad)
 
   function openMapView() {
     setHamburgerMenu();
@@ -20,10 +21,8 @@ export default function MainMenu() {
     setBackToMap(true);
     setPrinciple(0);
     setBottomNav(false);
+    setPanoramicLoad(false);
     playSound('ui_click')
-    // if (spotLight == true) {
-    //   playSound('reverse')
-    // }
   }
   
   return (
@@ -34,7 +33,7 @@ export default function MainMenu() {
           <Logo class='medium mainmenu' logo='black' />
         </div>
         <div className="mainmenu_x_container topnav_item">
-          <img src="/images/hamburger_closed.png" alt="Hamburger Menu Icon" className='pointer' 
+          <img src="/svg/hamburger_closed.svg" alt="Hamburger Menu Closed Icon" className='pointer' 
             onClick={() => {setHamburgerMenu(), playSound('ui_click')}}
           />
         </div>

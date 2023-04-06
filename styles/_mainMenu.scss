@@ -99,6 +99,9 @@
 
 //  Small
 @media (max-width: 768px) {
+  .mainmenu_wrapper {
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); 
+  }
   .mainmenu_logo_container img {
       width: 89px;
   }
@@ -127,5 +130,3 @@
     top: calc(50vh - 100px);
   } 
 }
-
-// gap: 243.5

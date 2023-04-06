@@ -1,4 +1,4 @@
-import { reduceVolume } from "@/utils/audio";
+import { reduceVolume } from "@/hooks/utils/audio";
 import React, { useEffect } from "react";
 
 export default function Sound () {

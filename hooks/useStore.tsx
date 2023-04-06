@@ -18,6 +18,8 @@ interface globalStore {
   setOpenPrinciple: (state: boolean) => void;
   bottomNav: boolean;
   setBottomNav: (state: boolean) => void;
+  panoramicLoad: boolean;
+  setPanoramicLoad: (state: boolean) => void;
 }
 
 const useStore = create<globalStore>((set) => ({
@@ -39,6 +41,8 @@ const useStore = create<globalStore>((set) => ({
   setOpenPrinciple: (state) => set(({ openPrinciple: state})),
   bottomNav: false,
   setBottomNav: (state) => set(({ bottomNav: state})),
+  panoramicLoad: false,
+  setPanoramicLoad: (state) => set(({ panoramicLoad: state})),
 }))
 
 export default useStore;

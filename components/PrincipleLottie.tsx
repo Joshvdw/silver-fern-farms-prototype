@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, RefObject, MutableRefObject } from 'react'
 import lottie, { AnimationItem } from "lottie-web";
 import lottieData from "@/public/lotties/principle_lottie.json";
-import { getTopPosition, normalise } from '@/utils/utils';
+import { getTopPosition, normalise } from '@/hooks/utils/utils';
 interface PrincipleLottieProps {
   reference: RefObject<HTMLDivElement> | null
 }
@@ -19,7 +19,10 @@ export default function PrincipleLottie(prop: PrincipleLottieProps) {
         renderer: "svg",
         loop: false,
         autoplay: false,
-        animationData: lottieData
+        animationData: lottieData,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        }
       });
 
     const animation = anim.current!

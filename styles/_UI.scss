@@ -15,8 +15,12 @@
   }
 
 // LOGOS
-.logo {
-  width: 100%;
+.large_logo_white {
+  width: 200px;
+}
+
+.medium_logo_white {
+  width: 166px;
 }
 
 // ARROW BTN
@@ -53,7 +57,7 @@
 // MUTE LOTTIE
 .mute_lottie {
   z-index: 5;
-  width: 30px;
+  width: 21px;
   position: fixed;
   left: $outer_padding;
   display: flex;
@@ -62,6 +66,32 @@
 
 .center_lottie {
   left: calc(50vw - 15px)!important;
+}
+
+// NEGATIVE FEEDBACK
+@keyframes shake {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(3em);
+  }
+  40% {
+    transform: translate(-3em);
+  }
+  60% {
+    transform: translate(3em);
+  }
+  80% {
+    transform: translate(-3em);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+div.shake {
+  animation: shake 0.5s infinite;
 }
 
 // ***** MEDIA QUERIES ******** //
@@ -85,6 +115,15 @@
   .arrow_btn_container {
     gap: 5px;
   }
+  .large_logo_white {
+    width: 168px;
+  }
+  .medium_logo_white {
+    width: 128px;
+  } 
+  .mute_lottie {
+    width: 14px;
+  }
 }
 
 //  Medium
@@ -95,6 +134,9 @@
   .back_btn img {
     width: 26px;
     height: 26px;
+  }
+  .large_logo_white {
+    width: 168px;
   }
 }
 
@@ -112,5 +154,9 @@
   }
   .mute_lottie {
     left: 7vw;
+    padding-bottom: 2.5px;
+  }
+  .large_logo_white, .medium_logo_white {
+    width: 100px;
   }
 }

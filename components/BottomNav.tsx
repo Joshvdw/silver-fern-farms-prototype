@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import useStore from '@/hooks/useStore';
-import Arrow_Button from './UI/Arrow_Button'
-import { principleCounter, calcPrevNum } from '@/utils/utils';
+import { principleCounter, calcPrevNum } from '@/hooks/utils/utils';
 import { useSpring, config, animated, to } from 'react-spring';
-import { playSound } from '@/utils/audio';
+import { playSound } from '@/hooks/utils/audio';
 import { setTimeout } from 'timers';
 
 export default function BottomNav() {
 
-  const [hover, setHover] = useState(false)
+  const [hoverLeft, setHoverLeft] = useState(false)
+  const [hoverRight, setHoverRight] = useState(false)
   const [prevNum, setPrevNum] = useState(7)
   const [position, setPosition] = useState(650);
 
@@ -45,7 +45,11 @@ export default function BottomNav() {
   }
 
   const moveNav = useSpring({
-    config: { ...config.molasses },
+    config: { 
+      ...config.molasses,
+      // duration: 2000 
+    },
+    // delay: 250,
     from: { 
       bottom: "0",
     },
@@ -54,13 +58,53 @@ export default function BottomNav() {
     }
   });
 
- const fadeGradient = useSpring({
+  const fadeGradient = useSpring({
     config: { ...config.molasses },
     from: { 
       opacity: "1",
     },
     to: {
       opacity: spotLight ? "0" : "1",
+    }
+  });
+
+  const blackFillLeft = useSpring({
+    config: { ...config.slow },
+    from: { 
+      background: "rgba(0, 0, 0, 0)",
+    },
+    to: {
+      background: hoverLeft ? "rgba(0, 0, 0, .75)" : "rgba(0, 0, 0, 0)",
+    }
+  });
+
+  const blackFillRight = useSpring({
+    config: { ...config.slow },
+    from: { 
+      background: "rgba(0, 0, 0, 0)",
+    },
+    to: {
+      background: hoverRight ? "rgba(0, 0, 0, .75)" : "rgba(0, 0, 0, 0)",
+    }
+  });
+
+  const moveTextRight = useSpring({
+    config: { ...config.slow },
+    from: { 
+      marginRight: "-0px",
+    },
+    to: {
+      marginRight: hoverLeft ? "-15px" : "-0px",
+    }
+  });
+
+  const moveTextLeft = useSpring({
+    config: { ...config.slow },
+    from: { 
+      marginLeft: "-0px",
+    },
+    to: {
+      marginLeft: hoverRight ? "-15px" : "-0px",
     }
   });
 
@@ -88,38 +132,48 @@ export default function BottomNav() {
       >
         <div className="bottomnav_item pointer" 
           onClick={() => handleClick("prev")}       
-          onMouseEnter={() => setHover(true)} 
-          onMouseLeave={() => setHover(false)} >
+          onMouseEnter={() => setHoverLeft(true)} 
+          onMouseLeave={() => setHoverLeft(false)} >
           <div className="spotlightnav_container spotlightnav_left">
             <div className="spotlightnav_btn_container">
-              <Arrow_Button forward={false} state={hover}/>
+              <animated.div className="back_btn" style={blackFillLeft}>
+                <img src="/svg/back_arrow.svg"  alt="Arrow icon for back button"  />
+              </animated.div>
               <div className="line_container">
                 <div className="line_dummy"></div>
                 <div className="border_top"></div>
               </div>
-              <p className="num_text_container">No.{prevNum}</p>
+              <animated.p className="num_text_container" style={moveTextRight}>
+                {/* No.{prevNum} */}
+                PREVIOUS
+              </animated.p>
             </div>
-            <div className="spotlightnav_title_container title_left">
+            <animated.div className="spotlightnav_title_container title_left" style={moveTextRight}>
               <p className="subheader subheader_bottomnav">Principle Name Here</p>
-            </div>          
+            </animated.div>          
           </div>
         </div>
         <div className="bottomnav_item pointer" 
           onClick={() => handleClick("next")}          
-          onMouseEnter={() => setHover(true)} 
-          onMouseLeave={() => setHover(false)} >
+          onMouseEnter={() => setHoverRight(true)} 
+          onMouseLeave={() => setHoverRight(false)} >
           <div className="spotlightnav_container spotlightnav_right">
             <div className="spotlightnav_btn_container spotlight_btn_right">
-              <p className="num_text_container">No. {principle == 7 ? 1 : principle + 1}</p>
+              <animated.p className="num_text_container" style={moveTextLeft}>
+                {/* No. {principle == 7 ? 1 : principle + 1} */}
+                NEXT
+              </animated.p>
               <div className="line_container">
                 <div className="line_dummy"></div>
                 <div className="border_top"></div>
               </div>
-              <Arrow_Button forward state={hover}/>
+            <animated.div className="back_btn" style={blackFillRight}>
+              <img src="/svg/forward_arrow.svg"  alt="Arrow icon for forward button"  />
+            </animated.div>
             </div>
-            <div className="spotlightnav_title_container">
+            <animated.div className="spotlightnav_title_container" style={moveTextLeft}>
               <p className="subheader subheader_bottomnav">Principle Name Here</p>
-            </div>      
+            </animated.div>      
           </div>
         </div>
       </animated.div>

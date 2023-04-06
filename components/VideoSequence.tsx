@@ -1,7 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
-import Arrow_Button from './UI/Arrow_Button';
 import useStore from '@/hooks/useStore'
-import { playSound } from '@/utils/audio';
+import { playSound } from '@/hooks/utils/audio';
 
 export default function VideoSequence() {
   
@@ -22,6 +21,7 @@ export default function VideoSequence() {
     setIsPlaying(false);
     setVideoSequence(false);  
     playSound('bg_ambience');  
+    window.sessionStorage.setItem('siteState', "true");   
   }
   
   return (
@@ -34,7 +34,9 @@ export default function VideoSequence() {
 
         <div onClick={() => {endVideo(), playSound('ui_click')}} className="arrow_btn_container videoskip_container">
           <p className='arrow_btn_text'>SKIP</p>
-          <Arrow_Button forward state={false}/>
+          <div className="back_btn">
+            <img src="/svg/forward_arrow.svg"  alt="Arrow icon for forward button"  />
+          </div>
         </div>
       </div>
       )}

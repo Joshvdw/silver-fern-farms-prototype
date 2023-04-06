@@ -1,14 +1,12 @@
 @font-face {
   font-family: "Graphik";
   src: url("/fonts/graphik/Graphik-Regular.woff2") format('woff2'),
-       url("/fonts/graphik/Graphik-Regular.eot") format('embedded-opentype'),
-      //  url("/fonts/graphik/Graphik-Regular.otf") format('opentype'),
-      //  url("/fonts/graphik/Graphik-Regular.ttf") format('truetype'),
-      //  url("/fonts/graphik/Graphik-Regular.woff") format('woff');
+       url("/fonts/graphik/Graphik-Regular.eot") format('embedded-opentype');
 }
 
-// @font-face {
-//   font-family: "Graphik";
-//   src: url("/fonts/graphik/Graphik-Bold.woff2");
-//   font-weight: 700;
-// }
+@font-face {
+  font-family: "Graphik";
+  src: url("/fonts/graphik/Graphik-Bold.woff2") format('woff2'),
+       url("/fonts/graphik/Graphik-Bold.eot") format('embedded-opentype');
+  font-weight: 700;
+}

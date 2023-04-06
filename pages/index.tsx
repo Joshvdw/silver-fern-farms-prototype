@@ -4,6 +4,12 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const documentHeight = () => {
+  const doc = document.documentElement
+    doc.style.setProperty('--doc-height', `${window.innerHeight}px`)
+  }
+  window.addEventListener("resize", documentHeight)
+  documentHeight()
   return (
     <>
       <Head>

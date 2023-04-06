@@ -35,3 +35,10 @@ video::-webkit-media-controls-time-remaining-display,
 video::-webkit-media-controls-fullscreen-button {
   display: none;
 }
+
+// mobile only
+@media (max-width: 480px) {
+  .videosequence_wrapper {
+    height: $mobile_height;
+  }
+}

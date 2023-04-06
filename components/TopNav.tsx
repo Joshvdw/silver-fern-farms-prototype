@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useSpring, animated, config } from 'react-spring';
-import { playSound } from '@/utils/audio';
+import { playSound } from '@/hooks/utils/audio';
 
 export default function TopNav() {
 
@@ -15,10 +15,10 @@ export default function TopNav() {
   const setOpenPrinciple = useStore((state: any) => state.setOpenPrinciple)
   const openPrinciple = useStore((state: any) => state.openPrinciple)
   const setBottomNav = useStore((state: any) => state.setBottomNav)
+  const setPanoramicLoad = useStore((state: any) => state.setPanoramicLoad)
 
   function backToBlueprint () {
     playSound('ui_click')
-    // playSound('reverse')
     setSpotLight(false);
     setPrinciple(0);
     setBackToMap(true);
@@ -29,6 +29,7 @@ export default function TopNav() {
     setBottomNav(true);
     setOpenPrinciple(false);
     playSound('ui_click')
+    setPanoramicLoad(false);
   }
 
   const fade = useSpring({
@@ -59,9 +60,9 @@ export default function TopNav() {
       </div>
       <div className="topnav_item topnav_logo_container">
         {!openPrinciple
-          ? <img src="/images/fern_logo_black.png" alt="Black Fern Icon" />
+          ? <img src="/svg/fern_logo_black.svg" alt="Black Fern Icon" />
           : <animated.img 
-              src="/images/fern_logo_black&white.png" 
+              src="/svg/fern_logo_black_white.svg" 
               alt="Fern Icon" 
               className="black_white_logo"
               style={{ ...fade}} 
