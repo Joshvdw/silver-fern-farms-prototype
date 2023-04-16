@@ -37,7 +37,7 @@
 }
 
 .topnav_back_container {
-  display: block;
+  display: flex;
   align-items: center;
 }
 
@@ -61,9 +61,9 @@
 .black_back_border {
   position: absolute;
   top: 0;
-  border-left: 2px solid $black;
+  border-left: 1px solid $black;
   width: 20rem;
-  height: $outer_padding;
+  height: 5.5rem;
 }
 
 // ***** MEDIA QUERIES ******** //
@@ -77,8 +77,7 @@
     font-size: 1.1rem;
   }
   .black_back_border {
-    border-left: 1px solid $black;
-    height: $outer_padding / 1.5;
+    height: 3rem;
   }
 }
 
@@ -86,6 +85,9 @@
 @media (max-width: 1280px) {
   .topnav_logo_container img {
     width: 40px;
+  }
+  .black_back_border {
+    height: 2.25rem;
   }
 }
 
@@ -95,7 +97,7 @@
     font-size: .9rem;
   }
   .black_back_border {
-    height: 10px;
+    height: 2rem;
   }
   .hamburger_menu {
     width: 32px;

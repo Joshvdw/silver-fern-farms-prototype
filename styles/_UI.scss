@@ -68,32 +68,6 @@
   left: calc(50vw - 15px)!important;
 }
 
-// NEGATIVE FEEDBACK
-@keyframes shake {
-  0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(3em);
-  }
-  40% {
-    transform: translate(-3em);
-  }
-  60% {
-    transform: translate(3em);
-  }
-  80% {
-    transform: translate(-3em);
-  }
-  100% {
-    transform: translate(0);
-  }
-}
-
-div.shake {
-  animation: shake 0.5s infinite;
-}
-
 // ***** MEDIA QUERIES ******** //
 
 //  Large
@@ -150,11 +124,12 @@ div.shake {
     height: 24px;
   }
   .back_btn_container {
-    top: $outer_padding!important;
+    top: $outer_padding * 2!important;
   }
   .mute_lottie {
     left: 7vw;
-    padding-bottom: 2.5px;
+    padding-bottom: calc(3vw - 2.5px);
+    bottom: 4vw!important;
   }
   .large_logo_white, .medium_logo_white {
     width: 100px;

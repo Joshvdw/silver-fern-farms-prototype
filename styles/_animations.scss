@@ -1,0 +1,26 @@
+
+// NEGATIVE FEEDBACK
+@keyframes shake {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(1rem);
+  }
+  40% {
+    transform: translate(-1rem);
+  }
+  60% {
+    transform: translate(.5rem);
+  }
+  80% {
+    transform: translate(-.5rem);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.shake {
+  animation: shake 0.5s infinite;
+}

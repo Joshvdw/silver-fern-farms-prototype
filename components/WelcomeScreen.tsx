@@ -2,6 +2,7 @@ import React from 'react'
 import useStore from '@/hooks/useStore'
 import CTA_Button from './UI/CTA_Button'
 import Logo from './UI/Logo'
+import { playSound } from '@/hooks/utils/audio'
 
 export default function WelcomeScreen() {
   
@@ -22,7 +23,7 @@ export default function WelcomeScreen() {
             putting them to work.</p>
         </div>
       </div>
-      <div onClick={setWelcomeScreen} className="explore_btn_container pointer">
+      <div onClick={() => {setWelcomeScreen(), playSound('bg_ambience')}} className="explore_btn_container pointer">
         <CTA_Button text='explore' />
       </div>
     </div>

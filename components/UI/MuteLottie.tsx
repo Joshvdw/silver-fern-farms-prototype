@@ -3,6 +3,7 @@ import lottie from "lottie-web";
 import mute_lottie from "@/public/lotties/mute_lottie.json";
 import mute_lottie_off from "@/public/lotties/mute_lottie_off.json";
 import mute_lottie_black from "@/public/lotties/mute_lottie_black.json";
+import mute_lottie_off_black from "@/public/lotties/mute_lottie_off_black.json";
 import useStore from '@/hooks/useStore';
 import { muteSounds, unMuteSound } from '@/hooks/utils/audio';
 
@@ -43,10 +44,10 @@ export default function MuteLottie() {
   useEffect(() => {
     const sound_anim = lottie.loadAnimation({
       container: lottie_off.current!,
-      animationData: mute_lottie_off
+      animationData: ((hamburgerMenu) || (((openPrinciple) && (scrolled))) ) ? mute_lottie_off_black : mute_lottie_off 
     });
     return () => sound_anim.destroy();
-  }, [playing])
+  }, [playing, hamburgerMenu, openPrinciple, scrolled, videoSequence])
 
   function handleClick() {    
     setPlaying(!playing)
@@ -58,13 +59,13 @@ export default function MuteLottie() {
         <div 
           ref={lottie_on} 
           className={`mute_lottie pointer ${hamburgerMenu ? 'center_lottie' : ''}`}
-          style={ { bottom: videoSequence ? '5vh' : 'calc(100vw / 14 * .25)' } }
+          style={ { bottom: videoSequence ? '5vh' : 'calc(100vw / 14 * .25)!important' } }
           onClick={() => muteSounds()}>
         </div>
       : 
         <div 
           ref={lottie_off} 
-          className="mute_lottie pointer"
+          className={`mute_lottie pointer ${hamburgerMenu ? 'center_lottie' : ''}`}
           style={ { bottom: videoSequence ? '5vh' : 'calc(100vw / 14 * .25)' } }
           onClick={() => unMuteSound()}>
         </div>

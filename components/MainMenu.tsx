@@ -1,11 +1,11 @@
 import useStore from '@/hooks/useStore'
 import { playSound } from '@/hooks/utils/audio'
-import React from 'react'
+import React, { useRef } from 'react'
 import Logo from './UI/Logo'
+import { negativeFeedbackShake } from '@/hooks/utils/utils'
 
 export default function MainMenu() {
 
-  const spotLight = useStore((state: any) => state.spotLight);
   const setSpotLight = useStore((state: any) => state.setSpotLight)
   const setHamburgerMenu = useStore((state: any) => state.setHamburgerMenu)
   const setBackToMap = useStore((state: any) => state.setBackToMap)  
@@ -24,6 +24,12 @@ export default function MainMenu() {
     setPanoramicLoad(false);
     playSound('ui_click')
   }
+
+  const linkInactive = useRef<HTMLParagraphElement>(null)
+  const linkInactive2 = useRef<HTMLParagraphElement>(null)
+  const linkInactive3 = useRef<HTMLParagraphElement>(null)
+  const linkInactive4 = useRef<HTMLParagraphElement>(null)
+  const linkInactive5 = useRef<HTMLParagraphElement>(null)
   
   return (
     <div className="mainmenu_wrapper">
@@ -41,13 +47,13 @@ export default function MainMenu() {
       <div className="mainmenu_flex">          
         <div className="mainmenu_container">
           <p className="menu_item_text active pointer" onClick={openMapView}>our blueprint</p>
-          <p className="menu_item_text inactive link_inactive">our vision</p>
-          <p className="menu_item_text inactive link_inactive">shop silver fern farms</p>
+          <p className="menu_item_text inactive link_inactive" ref={linkInactive} onClick={() => negativeFeedbackShake(linkInactive)}>our vision</p>
+          <p className="menu_item_text inactive link_inactive" ref={linkInactive2} onClick={() => negativeFeedbackShake(linkInactive2)}>shop silver fern farms</p>
         </div>
         <div className="langpick_container">
-          <p className="langpick_text active">english<span className='dropdown_icon'>&#x25BE;</span></p>
-          <p className="langpick_text inactive link_inactive">te reo māori</p>
-          <p className="langpick_text inactive link_inactive">中文</p>
+          <p className="langpick_text active" ref={linkInactive3} onClick={() => negativeFeedbackShake(linkInactive3)}>english<span className='dropdown_icon'>&#x25BE;</span></p>
+          <p className="langpick_text inactive link_inactive" ref={linkInactive4} onClick={() => negativeFeedbackShake(linkInactive4)}>te reo māori</p>
+          <p className="langpick_text inactive link_inactive chinese_lang" ref={linkInactive5} onClick={() => negativeFeedbackShake(linkInactive5)}>中文</p>
         </div>
       </div>
     </div>

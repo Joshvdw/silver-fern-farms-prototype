@@ -4,6 +4,7 @@ import { principleCounter, calcPrevNum } from '@/hooks/utils/utils';
 import { useSpring, config, animated, to } from 'react-spring';
 import { playSound } from '@/hooks/utils/audio';
 import { setTimeout } from 'timers';
+import principleData from '@/data/principleData';
 
 export default function BottomNav() {
 
@@ -47,7 +48,7 @@ export default function BottomNav() {
   const moveNav = useSpring({
     config: { 
       ...config.molasses,
-      // duration: 2000 
+      duration: 2500 
     },
     // delay: 250,
     from: { 
@@ -115,9 +116,11 @@ export default function BottomNav() {
       const navHeight = bottomNavRef.current?.getBoundingClientRect().height;
       let newPosition = position
 
-      if(navHeight) newPosition = (viewportHeight - navHeight) * .95
+      if(navHeight) newPosition = (viewportHeight - navHeight) * .90
       setPosition(newPosition)
   }, [spotLight]);
+
+  let nextNum = principle == 7 ? 1 : principle + 1
   
   return (
     <>
@@ -135,7 +138,7 @@ export default function BottomNav() {
           onMouseEnter={() => setHoverLeft(true)} 
           onMouseLeave={() => setHoverLeft(false)} >
           <div className="spotlightnav_container spotlightnav_left">
-            <div className="spotlightnav_btn_container">
+            <animated.div className="spotlightnav_btn_container"  style={moveTextRight}>
               <animated.div className="back_btn" style={blackFillLeft}>
                 <img src="/svg/back_arrow.svg"  alt="Arrow icon for back button"  />
               </animated.div>
@@ -143,14 +146,13 @@ export default function BottomNav() {
                 <div className="line_dummy"></div>
                 <div className="border_top"></div>
               </div>
-              <animated.p className="num_text_container" style={moveTextRight}>
-                {/* No.{prevNum} */}
-                PREVIOUS
+              <animated.p className="num_text_container">
+                 PREVIOUS
               </animated.p>
-            </div>
-            <animated.div className="spotlightnav_title_container title_left" style={moveTextRight}>
-              <p className="subheader subheader_bottomnav">Principle Name Here</p>
-            </animated.div>          
+            </animated.div>
+            <div className="spotlightnav_title_container title_left">
+              <animated.p className="subheader subheader_bottomnav" style={moveTextRight}>{principleData[prevNum - 1]}</animated.p>
+            </div>          
           </div>
         </div>
         <div className="bottomnav_item pointer" 
@@ -158,22 +160,21 @@ export default function BottomNav() {
           onMouseEnter={() => setHoverRight(true)} 
           onMouseLeave={() => setHoverRight(false)} >
           <div className="spotlightnav_container spotlightnav_right">
-            <div className="spotlightnav_btn_container spotlight_btn_right">
-              <animated.p className="num_text_container" style={moveTextLeft}>
-                {/* No. {principle == 7 ? 1 : principle + 1} */}
+            <animated.div className="spotlightnav_btn_container spotlight_btn_right" style={moveTextLeft}>
+              <animated.p className="num_text_container">
                 NEXT
               </animated.p>
               <div className="line_container">
                 <div className="line_dummy"></div>
                 <div className="border_top"></div>
               </div>
-            <animated.div className="back_btn" style={blackFillRight}>
-              <img src="/svg/forward_arrow.svg"  alt="Arrow icon for forward button"  />
+              <animated.div className="back_btn" style={blackFillRight}>
+                <img src="/svg/forward_arrow.svg" alt="Arrow icon for forward button"  />
+              </animated.div>`
             </animated.div>
-            </div>
-            <animated.div className="spotlightnav_title_container" style={moveTextLeft}>
-              <p className="subheader subheader_bottomnav">Principle Name Here</p>
-            </animated.div>      
+            <div className="spotlightnav_title_container title_right">
+              <animated.p className="subheader subheader_bottomnav" style={moveTextLeft}>{principleData[nextNum - 1]}</animated.p>
+            </div>      
           </div>
         </div>
       </animated.div>

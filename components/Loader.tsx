@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
 import { useSpring, config, animated, easings } from "react-spring";
 
-export default function Loader (props: {loadingProgress: number}) {
-
+export default function Loader (props: {loadingProgress: number}) {  
   const loadingLogo = useRef<HTMLDivElement>(null)  
 
   const fadeLoop = useSpring({

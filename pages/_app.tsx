@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import '@/styles/globals.scss'
+import "@/styles/globals.scss";
 import PrinciplePage from "@/components/PrinciplePage";
 import LandingPage from "@/components/LandingPage";
 import MuteLottie from "@/components/UI/MuteLottie";
@@ -15,26 +15,20 @@ import { playSound } from "@/hooks/utils/audio";
 import Loader from "@/components/Loader";
 
 export default function App() {
-
   // react-unity-webgl config
-  // const { unityProvider, sendMessage, addEventListener, removeEventListener, isLoaded  } = useUnityContext({
-  //   loaderUrl: "/unity/BuildGzip.loader.js",
-  //   dataUrl: "/unity/BuildGzip.data.gz",
-  //   frameworkUrl: "/unity/BuildGzip.framework.js",
-  //   codeUrl: "/unity/BuildGzip.wasm.gz",
-  // });
-  // const { unityProvider, sendMessage, addEventListener, removeEventListener, isLoaded  } = useUnityContext({
-  //   loaderUrl: "/Build/Build_Gzip/BuildGzip.loader.js",
-  //   dataUrl: "/Build/Build_Gzip/BuildGzip.data.gz",
-  //   frameworkUrl: "/Build/Build_Gzip/BuildGzip.framework.js",
-  //   codeUrl: "/Build/Build_Gzip/BuildGzip.wasm.gz",
-  // });
-
-  const { unityProvider, sendMessage, addEventListener, removeEventListener, loadingProgression, isLoaded  } = useUnityContext({
-    loaderUrl: "/Build/Build.loader.js",
-    dataUrl: "/Build/Build.data",
-    frameworkUrl: "/Build/Build.framework.js",
-    codeUrl: "/Build/Build.wasm",
+  const {
+    unityProvider,
+    sendMessage,
+    addEventListener,
+    removeEventListener,
+    isLoaded,
+    loadingProgression,
+    initialisationError,
+  } = useUnityContext({
+    loaderUrl: "/Build/BuildGzip.loader.js",
+    dataUrl: "/Build/BuildGzip.data.gz",
+    frameworkUrl: "/Build/BuildGzip.framework.js.gz",
+    codeUrl: "/Build/BuildGzip.wasm.gz",
   });
 
   // global state management for interactions
@@ -45,60 +39,62 @@ export default function App() {
   const spotLight = useStore((state: any) => state.spotLight);
   const hamburgerMenu = useStore((state: any) => state.hamburgerMenu);
   const backToMap = useStore((state: any) => state.backToMap);
-  const setBackToMap = useStore((state: any) => state.setBackToMap)
-  const principle = useStore((state: any) => state.principle)
-  const openPrinciple = useStore((state: any) => state.openPrinciple)
-  const setSpotLight = useStore((state: any) => state.setSpotLight)
+  const setBackToMap = useStore((state: any) => state.setBackToMap);
+  const principle = useStore((state: any) => state.principle);
+  const openPrinciple = useStore((state: any) => state.openPrinciple);
+  const setSpotLight = useStore((state: any) => state.setSpotLight);
 
   // returning visitor state
-  const [visited, setVisited] = useState('false')
+  const [visited, setVisited] = useState("false");
 
   useEffect(() => {
-    const siteState = window.sessionStorage.getItem("siteState");   
-    console.log(siteState);
-    
+    const siteState = window.sessionStorage.getItem("siteState");
     if (visited == "true") {
-      sendMessage("Spotlight_Manager","unity_open")
+      sendMessage("Spotlight_Manager", "unity_open");
       setLandingPage(false);
     }
-    if (siteState == 'true') {
-      setVisited('true') 
-    } else if (siteState == 'false') {
-      setVisited('false')
+    if (siteState == "true") {
+      setVisited("true");
+    } else if (siteState == "false") {
+      setVisited("false");
     }
-  }, [visited, isLoaded])
+  }, [visited, isLoaded]);
 
   // send messages to Unity Build
   useEffect(() => {
     if (!videoSequence) {
-      sendMessage("Spotlight_Manager","unity_open")
+      sendMessage("Spotlight_Manager", "unity_open");
     }
-  }, [videoSequence])
+  }, [videoSequence]);
 
   useEffect(() => {
     if (!welcomeScreen) {
-      sendMessage("Spotlight_Manager", "map_intro")
+      sendMessage("Spotlight_Manager", "map_intro");
     }
-  }, [welcomeScreen])
+  }, [welcomeScreen]);
 
   useEffect(() => {
     if (spotLight) {
-      sendMessage("Spotlight_Manager", "open_spotlight", `${principle.toString()}`)   
+      sendMessage(
+        "Spotlight_Manager",
+        "open_spotlight",
+        `${principle.toString()}`
+      );
     }
-  }, [spotLight, principle])
+  }, [spotLight, principle]);
 
   useEffect(() => {
     if (backToMap == true) {
-      sendMessage("Spotlight_Manager", "return_to_map")   
+      sendMessage("Spotlight_Manager", "return_to_map");
     }
-  }, [backToMap])
+  }, [backToMap]);
 
   // handle spotlight open functionality
   const openSpotlight = useCallback((principle: any) => {
-    setSpotLight(true)
-    setBackToMap(false)
-    playSound('ui_click')
-    playSound('transition')
+    setSpotLight(true);
+    setBackToMap(false);
+    playSound("ui_click");
+    playSound("transition");
   }, []);
 
   // event listeners for Unity functions
@@ -108,49 +104,45 @@ export default function App() {
       removeEventListener("PageOpen", openSpotlight);
     };
   }, [addEventListener, removeEventListener, openSpotlight]);
-  
-  return ( 
+
+  useEffect(() => {
+    console.log(initialisationError);
+  }, [initialisationError]);
+
+  return (
     <>
       <div className="main">
         <LandingPage />
         <Sound />
 
-      {welcomeScreen && (
-        <WelcomeScreen />
-      )}
+        {welcomeScreen && <WelcomeScreen />}
 
         {!welcomeScreen && (
           <>
             <TopNav />
-            {!openPrinciple && (
-              <BottomNav />
-            )}
+            {!openPrinciple && <BottomNav />}
           </>
         )}
-         
+
         {openPrinciple && (
           <>
-          <PrinciplePage page={principle}/> 
+            <PrinciplePage page={principle} />
           </>
         )}
 
-        {((spotLight) && (!openPrinciple))&& (
-          <SpotlightFooter />
-        )}
+        {spotLight && !openPrinciple && <SpotlightFooter />}
 
-        {hamburgerMenu && (
-          <MainMenu />
-        )}
+        {hamburgerMenu && <MainMenu />}
       </div>
       <MuteLottie />
       {!isLoaded && (
-        <Loader loadingProgress={Math.round(loadingProgression * 100)}/>
-      )} 
-        <Unity 
-          unityProvider={unityProvider} 
-          className="unity_canvas"
-          style={{ visibility: isLoaded ? "visible" : "hidden" }}
-        />
+        <Loader loadingProgress={Math.round(loadingProgression * 100)} />
+      )}
+      <Unity
+        unityProvider={unityProvider}
+        className="unity_canvas"
+        style={{ visibility: isLoaded ? "visible" : "hidden" }}
+      />
     </>
-  )
+  );
 }

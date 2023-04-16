@@ -1,0 +1,5 @@
+[[headers]]
+  for = "*.gz"
+  [headers.values]
+    Content-Encoding = "gzip"
+    Content-Type = "application/gzip"

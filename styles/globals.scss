@@ -13,7 +13,8 @@
 "./spotlightFooter", 
 "./principleLottie",
 "./panoramic",
-"./loader";
+"./loader",
+'./animations';
 
 // CSS RESET
 * {
@@ -188,6 +189,9 @@ h6 {
   html, body, .unity_canvas {
     // height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); 
     // min-height: -webkit-fill-available;
-    height: $mobile_height;
+    // height: $mobile_height;
+  }
+  h2 {
+    font-size: 3rem;
   }
 }

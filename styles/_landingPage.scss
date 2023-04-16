@@ -11,6 +11,12 @@
   gap: $g1 /2;
 }
 
+.landpage_outer {
+  height: 100%;
+  width: 100%;
+  background: $black;
+}
+
 // LOGO 
 .large_logo_wrapper {
   padding: $g1 /2;
@@ -49,7 +55,14 @@
   letter-spacing: 0.075em;
 }
 
-
+.black_fade {
+  height: 100%;
+  width: 100vw;
+  background-color: $black;
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
 // ***** MEDIA QUERIES ******** //
 
 //  Large
@@ -82,9 +95,6 @@
   .landingpage_wrapper {
     padding-top: $outer_padding;
   }
-  .sound_notice_container {
-    // padding-top: 15px;
-  }
   .landingpage_wrapper {
     padding-top: 5%;
   }
@@ -102,7 +112,13 @@
     padding: 0;
   }
   .landingpage_wrapper {
-    padding-top: 15%;
+    padding-top: 0%;
+    padding-bottom: 20%;
+    justify-content: space-around;
+  }
+  .sound_notice_container {
+    position: fixed;
+    bottom: 3vw;
   }
 }
 

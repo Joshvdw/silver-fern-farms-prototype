@@ -22,7 +22,7 @@ function muteSounds() {
 }
 
 function unMuteSound() {
-  muted = true
+  muted = false
   const sounds = document.querySelectorAll('audio');
   const videos = document.querySelectorAll('video');
 

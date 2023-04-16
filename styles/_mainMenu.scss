@@ -69,6 +69,10 @@
   display: none;
 }
 
+.chinese_lang {
+  margin-top: -3px;
+}
+
 // ***** MEDIA QUERIES ******** //
 
 //  Large
@@ -81,6 +85,9 @@
   }
   .langpick_text {
     font-size: 1.4rem;
+  }
+  .chinese_lang {
+    margin-top: -3px;
   }
 }
 
@@ -95,6 +102,9 @@
   .mainmenu_flex {
     top: calc(50vh - 200px);
   } 
+  .chinese_lang {
+    margin-top: -3.5px;
+  }
 }
 
 //  Small
@@ -127,6 +137,6 @@
     cursor: not-allowed;
   }
   .mainmenu_flex {
-    top: calc(50vh - 100px);
+    top: calc(30vh);
   } 
 }

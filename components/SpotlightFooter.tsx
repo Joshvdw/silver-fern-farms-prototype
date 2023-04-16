@@ -28,10 +28,9 @@ export default function SpotlightFooter() {
   });
 
   const slideUp = useSpring({
-    // delay: 750,
     config: { 
       ...config.molasses, 
-      // duration: 2000 
+      duration: 3000 
     },
     from: { bottom: '-50%' },
     to: { bottom: '-0%' }

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSpring, animated, config } from 'react-spring';
-import { useIntersectionObserver } from '@/hooks/utils/utils';
+import { mobileSizeState, useIntersectionObserver } from '@/hooks/utils/utils';
 import PrincipleLottie from './PrincipleLottie'
 import Panoramic from './Panoramic';
 import { playSound, toggleBackgroundSound } from '@/hooks/utils/audio';
@@ -17,6 +17,10 @@ export default function PrinciplePage(prop: {page: string}) {
   const [panoramicState, setPanoramicState] = useState(false);
 
   const panoramicLoad = useStore((state: any) => state.panoramicLoad)
+
+  useEffect(() => {    
+    setPanoramicState(panoramicLoad)
+  }, [panoramicLoad])
 
   useEffect(() => {
     function handleScroll() {
@@ -61,9 +65,7 @@ export default function PrinciplePage(prop: {page: string}) {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-
   const fade_delay = 500
-  // const fade_delay = 0
 
   const fade_h1 = useSpring({
     config: { ...config.molasses },
@@ -115,11 +117,6 @@ export default function PrinciplePage(prop: {page: string}) {
     }
   });
 
-  useEffect(() => {
-    console.log(panoramicLoad);
-    
-    setPanoramicState(panoramicLoad)
-  }, [panoramicLoad])
   
   // hero transition 
   const slide_delay = 1250
@@ -206,29 +203,9 @@ export default function PrinciplePage(prop: {page: string}) {
     from: { opacity: 1},
     to: { opacity: scrolled ? 0 : 1 }
   });  
-
-  let viewportWidth = window.innerWidth;
   
-  useEffect(() => {
-    const handleResize = () => {
-      const viewportWidth = window.innerWidth;
-      if (viewportWidth < 768) {
-        setIsMobile(true);
-      } else if (viewportWidth > 768) {
-        setIsMobile(false);
-      }
-    };
-    
-    handleResize(); // Call the function once to set the initial state.
-    
-    window.addEventListener('resize', handleResize);
-    setIsLoading(false); // Set isLoading to false once the state has been updated.
+  mobileSizeState(isMobile, setIsMobile, setIsLoading)
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isMobile]);
-  console.log(panoramicState)
   return (
     <animated.div style={pageSlide} className='principle_wrapper' ref={wrapperRef} onScroll={() => setScrolled(true)}>
       <animated.div className="principle_hero_container" >
@@ -239,38 +216,55 @@ export default function PrinciplePage(prop: {page: string}) {
             <animated.span style={panoramicState ? fadeOut : {opacity: "1"}}>{panoramicState ? num2.val.to(val => val.toFixed(4)): ''}</animated.span>
             <animated.span style={panoramicState ? fadeOut : {opacity: "1"}}>°  E</animated.span>
           </animated.h5>
-          <animated.h2 style={panoramicState ? fade2 : {opacity: "0"}}>P{prop.page} LINDIS CROSSING</animated.h2>
+          <animated.h2 style={panoramicState ? fade2 : {opacity: "0"}}>LINDIS CROSSING</animated.h2>
           <animated.h5 style={panoramicState ? fade3 : {opacity: "0"}}>CENTRAL OTAGO | NEW ZEALAND</animated.h5>
         </animated.div>
-        <animated.a href="#scrolldown_link" className="scrolldown_indicator_container" style={{...scrollDown, ...fadeOutScroll}} onClick={() => playSound('ui_click')}>
+        <animated.a href="#principle_page" className="scrolldown_indicator_container" style={{...scrollDown, ...fadeOutScroll}} onClick={() => playSound('ui_click')}>
           <animated.p className="footer_header scrolldown_header" style={panoramicState ? fade3 : {opacity: "0"}}>SCROLL</animated.p>
           <animated.img src="/svg/scrolldown_line.svg" alt="Scrolldown Indicator Button"  style={fade3} />
         </animated.a>
       </animated.div>
       <Panoramic />
       <animated.div style={blackOverlay} className="black_hero_overlay"></animated.div>
-      <div className="principle_content_container" id='scrolldown_link'>
+      <div className="principle_content_container" id='principle_page'>
         <animated.h6 ref={triggerRef_h6} style={fade_h6}>PRINCIPLE No. {prop.page}</animated.h6>
         <animated.h1 ref={triggerRef_h1} style={fade_h1} className="principle_header">REDUCING OUR CARBON FOOTPRINT</animated.h1>
-        <animated.p className="principle_subheader" ref={triggerRef_subheader} style={fade_subheader}>lorem ipsum dolor sit amet, consectetur adipiscing elit sit dolor amet.</animated.p>
-          <animated.div style={fade_video} ref={triggerRef_video}>
-            {isLoading ? (
-                <></>
-              ) 
-            : 
-              (
-                <video 
-                  className='principle_video' 
-                  autoPlay 
-                  controls loop 
-                >
-                  <source src={`/videos/${isMobile ? 'intro_sequence' : 'principle_video'}.mp4`} type="video/mp4"/>
-                </video> 
-            )}
-          </animated.div>
-        <animated.p className='principle_paragraph' ref={triggerRef_paragraph} style={fade_paragraph}>lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
-        ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</animated.p>
+        <animated.p 
+          className="principle_subheader" 
+          ref={triggerRef_subheader} 
+          style={fade_subheader}
+        >
+          Meet the Smith Family, planting natives to inset their emissions on-farm.
+        </animated.p>
+        <animated.div style={fade_video} ref={triggerRef_video}>
+          {isLoading ? (
+              <></>
+            ) 
+          : 
+            (
+              <video 
+                className='principle_video' 
+                autoPlay 
+                disablePictureInPicture
+                controlsList="nodownload noplaybackrate"
+                controls
+                loop 
+                // make video play inline, instead of fullscreen by default on mobile
+                webkit-playsinline="true"
+                playsInline
+              >
+                {/* change first principle video to mobile version */}
+                <source src={`/videos/${isMobile ? 'principle_video' : 'principle_video'}.mp4`} type="video/mp4"/>
+              </video> 
+          )}
+        </animated.div>
+        <animated.p className='principle_paragraph' ref={triggerRef_paragraph} style={fade_paragraph}>
+          The Smiths are a proud, third-generation farm family from Otago. 
+          Deeply connected to the land and conscious of the threat of climate change, 
+          they are committed to working in a sustainable way for future generations. 
+          Join their journey to counter the emissions of their farm by planting native trees — 
+          striving to make a regenerative impact on the world, starting in their very own backyard.
+        </animated.p>
       </div>
       <PrincipleLottie reference={wrapperRef}/>
     </animated.div>
