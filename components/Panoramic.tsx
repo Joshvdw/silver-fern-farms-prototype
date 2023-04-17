@@ -29,7 +29,8 @@ export default function Panoramic () {
   };
 
   const spinner = useMemo(() => [new LoadingSpinner()], []);
-
+  console.log(projection);
+  
   return (
     <>
       <View360 
@@ -41,7 +42,7 @@ export default function Panoramic () {
         fov={90}
         rotate={true}
         gyro={true}
-        initialYaw={10}
+        // initialYaw={10}
         on={{
           loadStart: onLoadStart,
           load: onLoad,

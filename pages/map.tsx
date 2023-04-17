@@ -1,3 +1,4 @@
+import Layout from '../components/Layout'
 import React, { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import PrinciplePage from "@/components/PrinciplePage";
@@ -13,10 +14,9 @@ import Sound from "@/components/Sound";
 import { playSound } from "@/hooks/utils/audio";
 import Loader from "@/components/Loader";
 
-export default function App() {
+export default function map({sendMessage, isLoaded}:any) {
 
-
-  // global state management for interactions
+    // global state management for interactions
   const setLandingPage = useStore((state: any) => state.setLandingPage);
   const videoSequence = useStore((state: any) => state.videoSequence);
   const welcomeScreen = useStore((state: any) => state.welcomeScreen);
@@ -27,11 +27,34 @@ export default function App() {
   const principle = useStore((state: any) => state.principle);
   const openPrinciple = useStore((state: any) => state.openPrinciple);
   const setSpotLight = useStore((state: any) => state.setSpotLight);
-
+  const setVideoSequence = useStore((state: any) => state.setVideoSequence);
+  
+  useEffect(() => {
+    if (isLoaded) {
+      sendMessage("Spotlight_Manager", "unity_open");
+    }
+  }, [isLoaded])
 
   return (
-    <div className="main">
-      <LandingPage />
-    </div>
-  );
+      <>
+        {welcomeScreen && <WelcomeScreen />}
+
+        {!welcomeScreen && (
+          <>
+            <TopNav />
+            {!openPrinciple && <BottomNav />}
+          </>
+        )}
+
+        {openPrinciple && (
+          <>
+            <PrinciplePage page={principle} />
+          </>
+        )}
+
+        {spotLight && !openPrinciple && <SpotlightFooter />}
+
+        {hamburgerMenu && <MainMenu />}
+    </>
+  )
 }

@@ -39,17 +39,15 @@ export default function SpotlightFooter() {
   
   return (
     <animated.div className="spotlight_footer_wrapper pointer" ref={divRef} style={bottomNav == false ? slideUp : {bottom: "-0%"}}>
-      {/* <Link href="/Principle"> */}
-        <div className="footer_container" onClick={handleClick}>
-          <div className="footer_text_container">
-            <p className="footer_header">SLIDE TO VISIT</p>
-            <p className="footer_text">LINDIS CROSSING STATION</p>
-          </div>
-          <div className="footer_btn_container">
-            <img src="/svg/spotlight_footer_btn.svg" alt="Spotlight Button" />
-          </div>
+      <div className="footer_container" onClick={handleClick}>
+        <div className="footer_text_container">
+          <p className="footer_header">SLIDE TO VISIT</p>
+          <p className="footer_text">LINDIS CROSSING STATION</p>
         </div>
-      {/* </Link> */}
+        <div className="footer_btn_container">
+          <img src="/svg/spotlight_footer_btn.svg" alt="Spotlight Button" />
+        </div>
+      </div>
     </animated.div>
   )
 }

@@ -1,7 +1,6 @@
-import Layout from '../components/Layout'
-import "@/styles/globals.scss";
 import React, { useCallback, useEffect, useState } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
+import "@/styles/globals.scss";
 import PrinciplePage from "@/components/PrinciplePage";
 import LandingPage from "@/components/LandingPage";
 import MuteLottie from "@/components/UI/MuteLottie";
@@ -15,8 +14,8 @@ import Sound from "@/components/Sound";
 import { playSound } from "@/hooks/utils/audio";
 import Loader from "@/components/Loader";
 
-export default function MyApp({ Component, pageProps }: any) {
-    // react-unity-webgl config
+export default function App() {
+  // react-unity-webgl config
   const {
     unityProvider,
     sendMessage,
@@ -32,23 +31,6 @@ export default function MyApp({ Component, pageProps }: any) {
     codeUrl: "/Build/BuildGzip.wasm.gz",
   });
 
-  // returning visitor state
-  // const [visited, setVisited] = useState("false");
-
-  // useEffect(() => {
-  //   const siteState = window.sessionStorage.getItem("siteState");
-  //   if (visited == "true") {
-  //     sendMessage("Spotlight_Manager", "unity_open");
-  //     setLandingPage(false);
-  //   }
-  //   if (siteState == "true") {
-  //     setVisited("true");
-  //   } else if (siteState == "false") {
-  //     setVisited("false");
-  //   }
-  // }, [visited, isLoaded]);
-
-
   // global state management for interactions
   const setLandingPage = useStore((state: any) => state.setLandingPage);
   const videoSequence = useStore((state: any) => state.videoSequence);
@@ -61,12 +43,28 @@ export default function MyApp({ Component, pageProps }: any) {
   const openPrinciple = useStore((state: any) => state.openPrinciple);
   const setSpotLight = useStore((state: any) => state.setSpotLight);
 
+  // returning visitor state
+  const [visited, setVisited] = useState("false");
+
+  useEffect(() => {
+    const siteState = window.sessionStorage.getItem("siteState");
+    if (visited == "true") {
+      sendMessage("Spotlight_Manager", "unity_open");
+      setLandingPage(false);
+    }
+    if (siteState == "true") {
+      setVisited("true");
+    } else if (siteState == "false") {
+      setVisited("false");
+    }
+  }, [visited, isLoaded]);
+
   // send messages to Unity Build
-  // useEffect(() => {
-  //   if (!videoSequence) {
-  //     sendMessage("Spotlight_Manager", "unity_open");
-  //   }
-  // }, [videoSequence]);
+  useEffect(() => {
+    if (!videoSequence) {
+      sendMessage("Spotlight_Manager", "unity_open");
+    }
+  }, [videoSequence]);
 
   useEffect(() => {
     if (!welcomeScreen) {
@@ -100,9 +98,9 @@ export default function MyApp({ Component, pageProps }: any) {
 
   // event listeners for Unity functions
   useEffect(() => {
-    addEventListener("PageOpen", () => openSpotlight(principle));
+    addEventListener("PageOpen", openSpotlight);
     return () => {
-      removeEventListener("PageOpen", () => openSpotlight(principle));
+      removeEventListener("PageOpen", openSpotlight);
     };
   }, [addEventListener, removeEventListener, openSpotlight]);
 
@@ -111,9 +109,31 @@ export default function MyApp({ Component, pageProps }: any) {
   }, [initialisationError]);
 
   return (
-    <Layout>
-      <Component {...pageProps} sendMessage={sendMessage} isLoaded={isLoaded}/>
-      {/* preloader & unity build */}
+    <>
+      <div className="main">
+        <LandingPage />
+        <Sound />
+
+        {welcomeScreen && <WelcomeScreen />}
+
+        {!welcomeScreen && (
+          <>
+            <TopNav />
+            {!openPrinciple && <BottomNav />}
+          </>
+        )}
+
+        {openPrinciple && (
+          <>
+            <PrinciplePage page={principle} />
+          </>
+        )}
+
+        {spotLight && !openPrinciple && <SpotlightFooter />}
+
+        {hamburgerMenu && <MainMenu />}
+      </div>
+      <MuteLottie />
       {!isLoaded && (
         <Loader loadingProgress={Math.round(loadingProgression * 100)} />
       )}
@@ -122,7 +142,6 @@ export default function MyApp({ Component, pageProps }: any) {
         className="unity_canvas"
         style={{ visibility: isLoaded ? "visible" : "hidden" }}
       />
-    </Layout>
-    
-  )
+    </>
+  );
 }

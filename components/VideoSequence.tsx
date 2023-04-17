@@ -3,6 +3,7 @@ import useStore from '@/hooks/useStore'
 import { playSound } from '@/hooks/utils/audio';
 import { useSpring, animated, config } from 'react-spring';
 import { idleTimer, mobileSizeState } from '@/hooks/utils/utils';
+import { useRouter } from 'next/router';
 
 export default function VideoSequence() {
   
@@ -14,6 +15,8 @@ export default function VideoSequence() {
 
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter()
 
   idleTimer(video, setIsIdle)
 
@@ -30,15 +33,17 @@ export default function VideoSequence() {
     setIsPlaying(false);
     setVideoSequence(false);  
     playSound('bg_ambience');  
-    window.sessionStorage.setItem('siteState', "true");   
+    window.sessionStorage.setItem('siteState', "true"); 
+    router.push('/map')  
   }
-
 
   const fadeOut = useSpring({
     config: { ...config.gentle },
     from: { opacity: 1},
     to: { opacity: isIdle ? 0 : 1 }
   });  
+
+    
   
   return (
     <>
