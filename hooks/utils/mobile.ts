@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 interface SwipeProps {
   ref: React.RefObject<HTMLDivElement>;
@@ -44,6 +44,54 @@ const useSwipe = ({ ref, onSwipeUp, onSwipeDown }: SwipeProps) => {
     };
   }, [ref, onSwipeUp, onSwipeDown]);
 };
+
+
+// WHETHER VIEWPORT WIDTH IS OF MOBILE DIMENSIONS 
+function mobileSizeState (isMobile: any, setIsMobile: any, setIsLoading: any) {
+  useEffect(() => {
+    const handleResize = () => {
+      const viewportWidth = window.innerWidth;
+      if (viewportWidth < 768) {
+        setIsMobile(true);
+      } else if (viewportWidth > 768) {
+        setIsMobile(false);
+      }
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    setIsLoading(false);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]);
+}
+
+
+// WHETHER VIEWPORT WIDTH IS OF MOBILE DIMENSIONS 
+function getScreenSize () {
+
+  const [viewport, setViewport] = useState({ width: window.innerWidth });
+
+  useEffect(() => {
+    function handleResize() {
+      setViewport({ width: window.innerWidth });
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = viewport.width < 768;
+  const isTablet = viewport.width >= 768 && viewport.width < 1280;
+  const isDesktop = viewport.width >= 1280;
+
+  return { viewport, isMobile, isTablet, isDesktop };
+}
+
 export {
-  useSwipe
+  useSwipe,
+  mobileSizeState,
+  getScreenSize
 } 

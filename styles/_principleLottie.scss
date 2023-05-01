@@ -1,5 +1,6 @@
 .principle_lottie_wrapper {
   height: 1500vh;
+  background-color: $black;
 }
 
 .lottie_container {
@@ -12,21 +13,64 @@
   width: 100%;
 }
 
+.to_top_container {
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  height: calc(100vh / 3);
+}
+
+.to_top_text {
+  color: $white;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.to_top_subcontainer{
+  display: flex;
+  justify-content: center;
+}
+
+.middle_line {
+  margin-left: calc(50vw - 1px);
+  width: 50vw;
+  height: calc(100vh / 9);
+  border-left: 2px solid white;
+  margin-bottom: 20px;
+}
+
 // ***** MEDIA QUERIES ******** //
 
 //  Large
 @media (max-width: 1800px) {
-
+  .to_top_text {
+    font-size: 1.4rem;
+  }
+  .middle_line {
+    margin-bottom: 10px;
+  }
 }
 
 //  Medium
 @media (max-width: 1280px) {
-
+  .to_top_text {
+    font-size: 1.4rem;
+  }
+  .middle_line {
+    margin-bottom: 10px;
+  }
 }
 
-//  mobile only
-@media (max-width: 480px) {
-  .principle_lottie {
-    height: $mobile_height!important;
+//  Small
+@media (max-width: 768px) {
+  .to_top_text {
+    font-size: 1.2rem;
+  }
+  .middle_line {
+    margin-bottom: 10px;
+  }
+  .to_top_container {
+    height: calc(100vh / 4);
   }
 }

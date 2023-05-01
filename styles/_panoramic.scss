@@ -16,6 +16,32 @@
   }
 }
 
+.fallback_video_container {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 2;
+  margin-top: -100vh;
+}
+
+.fallback_video {
+  height: 100%;
+  width: 100%;
+
+  // make 16:9 video always full screen (will be zoomed)
+  width: 177.77777778vh; /* 100 * 16 / 9 */
+  min-width: 100%;
+  min-height: 56.25vw;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
 @media (max-width: 480px) {
   .canvas_360_container {
     height: $mobile_height!important;

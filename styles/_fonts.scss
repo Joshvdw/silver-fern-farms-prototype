@@ -1,7 +1,9 @@
 @font-face {
   font-family: "Graphik";
   src: url("/fonts/graphik/Graphik-Regular.woff2") format('woff2'),
-       url("/fonts/graphik/Graphik-Regular.eot") format('embedded-opentype');
+       url("/fonts/graphik/Graphik-Regular.eot") format('embedded-opentype'),
+       url('/fonts/graphik/Graphik-Regular.woff') format('woff'),
+       url('/fonts/graphik/Graphik-Regular.ttf') format('truetype');
 }
 
 @font-face {

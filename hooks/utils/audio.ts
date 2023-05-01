@@ -55,10 +55,15 @@ function reduceVolume(sample: string, amount: number) {
   sound.volume = amount;    
 }
 
+function isMuted() {
+  return muted
+}
+
 export {
   playSound,
   muteSounds,
   unMuteSound,
   toggleBackgroundSound,
-  reduceVolume
+  reduceVolume, 
+  isMuted
 }

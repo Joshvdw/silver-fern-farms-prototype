@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import useStore from '@/hooks/useStore';
-import { principleCounter, calcPrevNum } from '@/hooks/utils/utils';
+import { getNextNum, getPrevNum } from '@/hooks/utils/utils';
 import { useSpring, config, animated, to } from 'react-spring';
 import { playSound } from '@/hooks/utils/audio';
 import { setTimeout } from 'timers';
@@ -8,49 +8,145 @@ import principleData from '@/data/principleData';
 
 export default function BottomNav() {
 
+  const arrayLength = principleData.length - 1;
+  const transitionTime = 5000
+
+  const [principle, setPrinciple] = useStore(
+    (state:any) => [state.principle, state.setPrinciple]
+  )
+
   const [hoverLeft, setHoverLeft] = useState(false)
   const [hoverRight, setHoverRight] = useState(false)
-  const [prevNum, setPrevNum] = useState(7)
-  const [position, setPosition] = useState(650);
+  const [position, setPosition] = useState(650)
+  const [hide, setHide] = useState(false)
+  const [transition, setTransition] = useState(false)
 
+  const [prevNum, setPrevNum] = useState(arrayLength)
+  const [nextNum, setNextNum] = useState(0)
+  const [navClick, setNavClick] = useState(false)
+  
   const spotLight = useStore((state: any) => state.spotLight);
   const setSpotLight = useStore((state: any) => state.setSpotLight)
+  const backToMap = useStore((state: any) => state.backToMap)
   const setBackToMap = useStore((state: any) => state.setBackToMap)
   const bottomNav = useStore((state: any) => state.bottomNav)
   const setBottomNav = useStore((state: any) => state.setBottomNav)
-
-  const [principle, setPrinciple] = useStore(
-    (state) => [state.principle, state.setPrinciple]
-  )
-
-  // catch for when principle page is reset
-  useEffect(() => {
-    if (principle == 0) {      
-      setPrevNum(7)
-    }
-  }, [principle])
   
-  function handleClick (direction: string) {
-    playSound('ui_click')
-    setPrinciple(principleCounter(direction, principle))  
-    setPrevNum(calcPrevNum(direction, principle, prevNum))
-    setBottomNav(false)
-    setBackToMap(false)
+  const bottomNavRef = useRef<HTMLDivElement>(null)
+  const navLeft = useRef<HTMLDivElement>(null)
+  const navRight = useRef<HTMLDivElement>(null)
 
-    if (!spotLight) {
-      setSpotLight(true)
-      setTimeout(()=> {
-        playSound('transition')
-      }, 500)
+  let clicked = false
+  
+  // if navigated from unity side
+  useEffect(() => {
+    if ((spotLight) && (!clicked)) {      
+      setPrevNum(getPrevNum(principle))
+      setNextNum(getNextNum(principle))
+      disableNav()
+    }
+  }, [principle, spotLight])
+
+  // if navigated from front-end
+  function handleClick (direction: string) {
+    if(!transition) {
+      playSound('ui_click')
+      setNavClick(true)
+      clicked = true
+      hideNav()
+      
+      if (direction == 'prev') {
+        setPrinciple(getPrevNum(principle))
+        setPrevNum(getPrevNum(prevNum))
+        if (navClick) {
+          setNextNum(getPrevNum(nextNum))
+        }
+        if (clicked) {
+          setNextNum(getPrevNum(nextNum))
+        }
+      }
+      
+      if (direction == 'next') {
+        console.log(navClick,'here');
+        if (navClick) {
+          setPrinciple(getNextNum(principle))
+          setPrevNum(getNextNum(prevNum))
+        }
+        if (clicked) {
+          setPrinciple(getNextNum(principle))
+          setPrevNum(getNextNum(prevNum))
+        }
+        setNextNum(getNextNum(nextNum))
+      }
+
+      setBottomNav(false)
+      setBackToMap(false)
+
+      if (!spotLight) {
+        setSpotLight(true)
+        // playSound('transition')
+      }
+      disableNav()
     }
   }
 
+  function hideNav() {
+    if(navClick) {
+      setHide(true)
+      if (navLeft.current) {
+        navLeft.current.style.display = 'none';
+      }
+      if (navRight.current) {
+        navRight.current.style.display = 'none';
+      }
+      setTimeout(()=>{
+        if (navLeft.current) {
+          navLeft.current.style.display = 'block';
+        }
+        if (navRight.current) {
+          navRight.current.style.display = 'block';
+        }
+        setHide(false)
+      }, transitionTime)
+    }
+  }
+
+  // make nav unclickable
+  function disableNav() {
+    setTransition(true)
+    setTimeout(() => {
+      setTransition(false)
+    }, transitionTime)
+  } 
+
+  // catch for map reset
+  useEffect(() => {
+    if ((backToMap) && (spotLight == false)) {         
+      setNavClick(false)  
+      clicked = false 
+      setPrevNum(arrayLength)
+      setNextNum(0)
+      disableNav()
+    }
+  }, [backToMap])
+
+  // get value for how far up the screen the nav should slide
+  useEffect(() => {
+    const viewportHeight = window.innerHeight;
+    const navHeight = bottomNavRef.current?.getBoundingClientRect().height;
+    let newPosition = position
+
+    if(navHeight) newPosition = (viewportHeight - navHeight) * .90
+    setPosition(newPosition)
+  }, [spotLight]);
+
+
+  // react-springs
   const moveNav = useSpring({
     config: { 
       ...config.molasses,
-      duration: 2500 
+      duration: transitionTime * .75
     },
-    // delay: 250,
     from: { 
       bottom: "0",
     },
@@ -60,7 +156,10 @@ export default function BottomNav() {
   });
 
   const fadeGradient = useSpring({
-    config: { ...config.molasses },
+    config: {
+      ...config.molasses, 
+      duration: transitionTime / 4  
+    },
     from: { 
       opacity: "1",
     },
@@ -75,7 +174,7 @@ export default function BottomNav() {
       background: "rgba(0, 0, 0, 0)",
     },
     to: {
-      background: hoverLeft ? "rgba(0, 0, 0, .75)" : "rgba(0, 0, 0, 0)",
+      background: hoverLeft && !transition ? "rgba(0, 0, 0, .75)" : "rgba(0, 0, 0, 0)",
     }
   });
 
@@ -85,7 +184,27 @@ export default function BottomNav() {
       background: "rgba(0, 0, 0, 0)",
     },
     to: {
-      background: hoverRight ? "rgba(0, 0, 0, .75)" : "rgba(0, 0, 0, 0)",
+      background: hoverRight && !transition ? "rgba(0, 0, 0, .75)" : "rgba(0, 0, 0, 0)",
+    }
+  });
+
+  const paddingLeft = useSpring({
+    config: { ...config.slow },
+    from: { 
+      paddingLeft: "0px",
+    },
+    to: {
+      paddingLeft: hoverLeft && !transition ? "15px" : "0px",
+    }
+  });
+
+  const paddingRight = useSpring({
+    config: { ...config.slow },
+    from: { 
+      paddingRight: "0px",
+    },
+    to: {
+      paddingRight: hoverRight && !transition ? "15px" : "0px",
     }
   });
 
@@ -95,7 +214,7 @@ export default function BottomNav() {
       marginRight: "-0px",
     },
     to: {
-      marginRight: hoverLeft ? "-15px" : "-0px",
+      marginRight: hoverLeft && !transition ? "-15px" : "-0px",
     }
   });
 
@@ -105,22 +224,19 @@ export default function BottomNav() {
       marginLeft: "-0px",
     },
     to: {
-      marginLeft: hoverRight ? "-15px" : "-0px",
+      marginLeft: hoverRight && !transition ? "-15px" : "-0px",
     }
   });
 
-  const bottomNavRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-      const viewportHeight = window.innerHeight;
-      const navHeight = bottomNavRef.current?.getBoundingClientRect().height;
-      let newPosition = position
-
-      if(navHeight) newPosition = (viewportHeight - navHeight) * .90
-      setPosition(newPosition)
-  }, [spotLight]);
-
-  let nextNum = principle == 7 ? 1 : principle + 1
+  const fadeNav = useSpring({
+    config: { ...config.molasses },
+    from: { 
+      opacity: "1",
+    },
+    to: {
+      opacity: hide ? "0" : "1",
+    }
+  });
   
   return (
     <>
@@ -130,11 +246,15 @@ export default function BottomNav() {
       </animated.div>
       <animated.div 
         className={`bottomnav_wrapper `} 
-        style={bottomNav == false ? moveNav : {bottom: '650px'}}
+        style={bottomNav == false ? moveNav : {bottom: `${position}px`}}
         ref={bottomNavRef}
       >
-        <div className="bottomnav_item pointer" 
-          onClick={() => handleClick("prev")}       
+        <animated.div className={`bottomnav_item ${!transition ? "pointer" : ""}`} 
+          ref={navLeft}
+          style={fadeNav}
+          onClick={() => { 
+            handleClick("prev");
+          }}       
           onMouseEnter={() => setHoverLeft(true)} 
           onMouseLeave={() => setHoverLeft(false)} >
           <div className="spotlightnav_container spotlightnav_left">
@@ -151,12 +271,18 @@ export default function BottomNav() {
               </animated.p>
             </animated.div>
             <div className="spotlightnav_title_container title_left">
-              <animated.p className="subheader subheader_bottomnav" style={moveTextRight}>{principleData[prevNum - 1]}</animated.p>
+              <animated.p className="subheader subheader_bottomnav" style={{...moveTextRight, ...paddingLeft}}>
+                {principleData[prevNum]}
+              </animated.p>
             </div>          
           </div>
-        </div>
-        <div className="bottomnav_item pointer" 
-          onClick={() => handleClick("next")}          
+        </animated.div>
+        <animated.div className={`bottomnav_item ${!transition ? "pointer" : ""}`}  
+          style={fadeNav}
+          ref={navRight}
+          onClick={() => {
+            handleClick("next");
+          }}          
           onMouseEnter={() => setHoverRight(true)} 
           onMouseLeave={() => setHoverRight(false)} >
           <div className="spotlightnav_container spotlightnav_right">
@@ -170,13 +296,15 @@ export default function BottomNav() {
               </div>
               <animated.div className="back_btn" style={blackFillRight}>
                 <img src="/svg/forward_arrow.svg" alt="Arrow icon for forward button"  />
-              </animated.div>`
+              </animated.div>
             </animated.div>
             <div className="spotlightnav_title_container title_right">
-              <animated.p className="subheader subheader_bottomnav" style={moveTextLeft}>{principleData[nextNum - 1]}</animated.p>
+              <animated.p className="subheader subheader_bottomnav" style={{...moveTextLeft, ...paddingRight}}>
+                {principleData[nextNum]}
+              </animated.p>
             </div>      
           </div>
-        </div>
+        </animated.div>
       </animated.div>
     </>
   )

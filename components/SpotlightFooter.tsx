@@ -1,7 +1,6 @@
 import useStore from '@/hooks/useStore';
 import { playSound } from '@/hooks/utils/audio';
 import { useSwipe } from '@/hooks/utils/mobile';
-import Link from 'next/link';
 import React, { useRef } from 'react'
 import { config, useSpring, animated } from 'react-spring';
 
@@ -9,13 +8,13 @@ export default function SpotlightFooter() {
 
   const setOpenPrinciple = useStore((state: any) => state.setOpenPrinciple)
   const bottomNav = useStore((state: any) => state.bottomNav)
+  
+  const divRef = useRef<HTMLDivElement>(null);
 
   function handleClick () {
     setOpenPrinciple(true);
     playSound('ui_click');
   }
-
-  const divRef = useRef<HTMLDivElement>(null);
 
   useSwipe({
     ref: divRef,
@@ -36,12 +35,11 @@ export default function SpotlightFooter() {
     to: { bottom: '-0%' }
   });  
   
-  
   return (
     <animated.div className="spotlight_footer_wrapper pointer" ref={divRef} style={bottomNav == false ? slideUp : {bottom: "-0%"}}>
       <div className="footer_container" onClick={handleClick}>
         <div className="footer_text_container">
-          <p className="footer_header">SLIDE TO VISIT</p>
+          <p className="footer_header">VISIT</p>
           <p className="footer_text">LINDIS CROSSING STATION</p>
         </div>
         <div className="footer_btn_container">

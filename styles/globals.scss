@@ -14,7 +14,8 @@
 "./principleLottie",
 "./panoramic",
 "./loader",
-'./animations';
+'./animations',
+'./blackMask';
 
 // CSS RESET
 * {
@@ -36,7 +37,7 @@ a {
 html {
   font-family: Graphik, sans-serif;;
   font-size: 10px;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -140,13 +141,12 @@ h6 {
   h5 {
     font-size: 2rem;
   }
-
   h6 {
     font-size: 1.6rem;
   } 
-
   .subheader {
     font-weight: 700;
+    // font-family: Graphik_Bold;
     font-size: 3.2rem;
     letter-spacing: 0.025em;
   }
@@ -171,13 +171,11 @@ h6 {
   h2 {
     font-size: 4rem;
   }
-
   h5 {
     font-size: 1.2rem;
     letter-spacing: 0.4em;  
     line-height: 133%;
   }
-
   h6 {
     font-size: 1rem;
     line-height: 110%;
@@ -186,11 +184,6 @@ h6 {
 
 // mobile only
 @media (max-width: 480px) {
-  html, body, .unity_canvas {
-    // height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); 
-    // min-height: -webkit-fill-available;
-    // height: $mobile_height;
-  }
   h2 {
     font-size: 3rem;
   }

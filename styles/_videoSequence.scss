@@ -36,6 +36,11 @@ video::-webkit-media-controls-fullscreen-button {
   display: none;
 }
 
+.principle_video::-webkit-media-controls-current-time-display,
+.principle_video::-webkit-media-controls-time-remaining-display {
+  display: block!important;
+}
+
 // mobile only
 @media (max-width: 480px) {
   .videosequence_wrapper {

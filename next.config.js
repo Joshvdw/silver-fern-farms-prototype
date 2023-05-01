@@ -2,10 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
+  output: "export",
   async headers() {
     return [
       {
-        source: "/:all*(gz)",
+        source: "/unity-build/gzip/:path*\\.gz",
         locale: false,
         headers: [
           {

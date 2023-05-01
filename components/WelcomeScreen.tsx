@@ -3,13 +3,24 @@ import useStore from '@/hooks/useStore'
 import CTA_Button from './UI/CTA_Button'
 import Logo from './UI/Logo'
 import { playSound } from '@/hooks/utils/audio'
+import { useSpring, animated, config } from 'react-spring';
 
 export default function WelcomeScreen() {
-  
   const setWelcomeScreen = useStore((state: any) => state.setWelcomeScreen)
 
+  const fadeIn = useSpring({
+    config: { ...config.slow },
+    from: { opacity: 0},
+    to: { opacity: 1 }
+  });  
+
+  function handleClick() {
+    setWelcomeScreen()
+    playSound('bg_ambience')
+  }
+
   return (
-    <div className='welcomeScreen_wrapper'>
+    <animated.div className='welcomeScreen_wrapper' style={fadeIn}>
       <div className="logo_container">
         <Logo class="medium" logo="white"/>
       </div>
@@ -23,9 +34,9 @@ export default function WelcomeScreen() {
             putting them to work.</p>
         </div>
       </div>
-      <div onClick={() => {setWelcomeScreen(), playSound('bg_ambience')}} className="explore_btn_container pointer">
+      <div onClick={handleClick} className="explore_btn_container pointer">
         <CTA_Button text='explore' />
       </div>
-    </div>
+    </animated.div>
   )
 }

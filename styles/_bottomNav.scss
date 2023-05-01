@@ -42,6 +42,7 @@
 .num_text_container {
   width: 100%;
   font-weight: 700;
+  // font-family: Graphik, sans-serif;;
   font-size: 1.6rem;
   letter-spacing: 0.33em;
 }
@@ -142,6 +143,19 @@
   }
   .title_right {
     padding-right: 5px;
+  }
+  // prevent hover effect on mobile / tablet sized devices
+  .back_btn {
+    background: rgba(0, 0, 0, 0)!important;
+  }
+  .spotlightnav_btn_container,
+  .subheader_bottomnav {
+    margin-right: 0px!important;
+    margin-left: 0px!important;
+  }
+  .subheader_bottomnav {
+    padding-right: 0px!important;
+    padding-left: 0px!important;    
   }
 }
 

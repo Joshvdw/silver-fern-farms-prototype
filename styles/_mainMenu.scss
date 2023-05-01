@@ -1,7 +1,6 @@
 .mainmenu_wrapper {
   @include fullscreen_wrapper;
   position: fixed;
-  top: 0;
   background-color: $primary;
   z-index: 1000;
   padding: $outer_padding * 2;

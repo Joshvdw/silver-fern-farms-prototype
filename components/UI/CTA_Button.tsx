@@ -1,7 +1,6 @@
 import { playSound } from '@/hooks/utils/audio'
 import React from 'react'
 
-
 export default function CTA_Button(prop: {text: string}) {
 
   return (
